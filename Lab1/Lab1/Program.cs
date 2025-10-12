@@ -1,4 +1,5 @@
-﻿//Zad2
+﻿//Test - Placeholder mesage
+//Zad2
 int number = 0;
 do
 {
