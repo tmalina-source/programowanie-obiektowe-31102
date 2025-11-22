@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tomasz\\source\\repos\\programowanie-obiektowe-31102\\Lab1\\Lab1\\Lab1.csproj": {}
+    "C:\\Users\\Tomasz\\Source\\Repos\\programowanie-obiektowe-31102\\Lab1\\Lab1\\Lab1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tomasz\\source\\repos\\programowanie-obiektowe-31102\\Lab1\\Lab1\\Lab1.csproj": {
+    "C:\\Users\\Tomasz\\Source\\Repos\\programowanie-obiektowe-31102\\Lab1\\Lab1\\Lab1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tomasz\\source\\repos\\programowanie-obiektowe-31102\\Lab1\\Lab1\\Lab1.csproj",
+        "projectUniqueName": "C:\\Users\\Tomasz\\Source\\Repos\\programowanie-obiektowe-31102\\Lab1\\Lab1\\Lab1.csproj",
         "projectName": "Lab1",
-        "projectPath": "C:\\Users\\Tomasz\\source\\repos\\programowanie-obiektowe-31102\\Lab1\\Lab1\\Lab1.csproj",
+        "projectPath": "C:\\Users\\Tomasz\\Source\\Repos\\programowanie-obiektowe-31102\\Lab1\\Lab1\\Lab1.csproj",
         "packagesPath": "C:\\Users\\Tomasz\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Tomasz\\Source\\Repos\\programowanie-obiektowe-31102\\Lab1\\Lab1\\obj\\",
         "projectStyle": "PackageReference",
@@ -65,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
