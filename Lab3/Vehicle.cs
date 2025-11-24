@@ -32,7 +32,7 @@ namespace Lab3
         }
         public void ShowMe()
         {
-            Console.WriteLine($"Model: {Model}, Year: {Year}");
+            Console.WriteLine($"Model: {Model}, Year: {Year}, Engine Capacity: {EngineCapacity}");
         }
         abstract public void Test();  //abstract methods basically force "children"/inheritors to have a method of the same name. They can't have a "body", so using {} brackets is a no-no
 
