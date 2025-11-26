@@ -1,4 +1,5 @@
 ﻿using Lab3;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 /*
 Console.WriteLine("a");
@@ -17,10 +18,10 @@ bool shopActive = true;
 while (shopActive == true)
 {
     Console.WriteLine("CAR SHOP");
-    Console.WriteLine("[0] Exit, [1] Show all, [2] Search by year, [5] Add Vehicle");
+    Console.WriteLine("[0] Exit, [1] Show all, [2] Search by year, [3] Search by model, [4] Search by engine capacity , [5] Add Vehicle");
     // HOMEWORK:
-    //3: Search by model, make it get accepted regarded of case, so BMV = bMV = BmV etc.
-    //4: Search by engine capacity
+    //3: Search by model, make it get accepted regarded of case, so BMV = bMV = BmV etc. [done]
+    //4: Search by engine capacity [done]
     var input = Console.ReadKey().KeyChar;
     Console.WriteLine();
     switch (input)
@@ -35,12 +36,18 @@ while (shopActive == true)
         case '2':
             SearchByYear();
             break;
+        case '3':
+            SearchByModel();
+            break;
+        case '4':
+            SearchByEngineCapacity();
+            break;
         case '5':
             AddNewVehicle();
             break;
         default:
             Console.WriteLine("invalid option");
-                break;
+            break;
     }
 }
 
@@ -81,6 +88,64 @@ void SearchByYear()
     }
 }
 
+void SearchByEngineCapacity()
+{
+    Console.WriteLine("Enter engine capacity: ");
+    if (double.TryParse(Console.ReadLine(), out double capacity))
+    {
+        var validVehicles = Database.Vehicles.Where(vehicle => vehicle.EngineCapacity == capacity);
+        if (validVehicles.Any())
+        {
+
+
+            foreach (var vehicle in validVehicles)
+            {
+                vehicle.ShowMe();
+            }
+        }
+        else
+        {
+            Console.WriteLine("No vehicles matching the provided capacity found, restarting");
+        }
+
+
+    }
+    else
+    {
+        Console.WriteLine("Invalid capacity, try again");
+        SearchByEngineCapacity();
+    }
+}
+
+void SearchByModel()
+{
+    Console.WriteLine("Enter car model: ");
+    var input = Console.ReadLine();
+    if (string.IsNullOrWhiteSpace(input))
+    {
+        Console.WriteLine("Invalid model, try again");
+        return;
+    }
+
+    var validVehicles = Database.Vehicles.Where(vehicle => vehicle.model.ToLower() == input.ToLower());
+    if (validVehicles.Any())
+    {
+
+
+        foreach (var vehicle in validVehicles)
+        {
+            vehicle.ShowMe();
+        }
+    }
+    else
+    {
+        Console.WriteLine("No vehicles matching the provided model found, restarting");
+    }
+
+
+
+}
+
 void AddNewVehicle()
 {
     Console.WriteLine("B for bike, C for car");
@@ -94,7 +159,7 @@ void AddNewVehicle()
     Console.WriteLine();
     Console.WriteLine("Provide engine capacity");
     bool correctlyParsed = double.TryParse(Console.ReadLine(), out double engineCapacity);
-    
+
     if (!correctlyParsed)
     {
         Console.WriteLine("Invalid engine capacity");
@@ -102,7 +167,7 @@ void AddNewVehicle()
     }
     Console.WriteLine("Provide year");
     correctlyParsed = int.TryParse(Console.ReadLine(), out int year);
-     if (!correctlyParsed)
+    if (!correctlyParsed)
     {
         Console.WriteLine("Invalid year");
         return;
@@ -120,11 +185,11 @@ void AddNewVehicle()
     {
         case "b":
             v = new Bike(engineCapacity, model, year);
-       
+
             break;
         case "c":
             v = new Car(engineCapacity, model, year);
-          
+
             break;
 
     }
@@ -132,5 +197,5 @@ void AddNewVehicle()
     {
         Database.Vehicles.Add(v);
     }
-   
+
 }
