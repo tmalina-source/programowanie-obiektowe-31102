@@ -1,6 +1,7 @@
 ﻿using Lab3;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 /*
 Console.WriteLine("a");
 Car car1 = new Car("Audi", 2023, 3.6);
@@ -14,6 +15,23 @@ car1.Start();
 //Console.WriteLine("a");
 
 //Car car1 = new Car();
+
+//Alternatively:
+//var carPath = Path.Combine(Directory.GetCurrentDirectory(), "cars.json");
+//var bikePath = Path.Combine(Directory.GetCurrentDirectory(), "bikes.json");
+
+var carsJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"));
+var cars = JsonSerializer.Deserialize<List<Car>>(carsJson);
+var bikesJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "bikes.json"));
+var bikes = JsonSerializer.Deserialize<List<Bike>>(bikesJson);
+List<Vehicle> Vehicles()
+{
+    var list = new List<Vehicle>();
+    list.AddRange(cars);
+    list.AddRange(bikes);
+    return list;
+}
+
 bool shopActive = true;
 while (shopActive == true)
 {
@@ -44,6 +62,7 @@ while (shopActive == true)
             break;
         case '5':
             AddNewVehicle();
+         
             break;
         default:
             Console.WriteLine("invalid option");
@@ -54,7 +73,7 @@ while (shopActive == true)
 void ShowAll()
 {
     Console.WriteLine("Our vehicles:");
-    foreach (var vehicle in Database.Vehicles)
+    foreach (var vehicle in Vehicles())
     {
         vehicle.ShowMe();
     }
@@ -64,7 +83,7 @@ void SearchByYear()
     Console.WriteLine("Enter year: ");
     if (Int32.TryParse(Console.ReadLine(), out int year))
     {
-        var validVehicles = Database.Vehicles.Where(vehicle => vehicle.year == year);
+        var validVehicles = Vehicles().Where(vehicle => vehicle.year == year);
         if (validVehicles.Any())
         {
 
@@ -93,7 +112,7 @@ void SearchByEngineCapacity()
     Console.WriteLine("Enter engine capacity: ");
     if (double.TryParse(Console.ReadLine(), out double capacity))
     {
-        var validVehicles = Database.Vehicles.Where(vehicle => vehicle.EngineCapacity == capacity);
+        var validVehicles = Vehicles().Where(vehicle => vehicle.EngineCapacity == capacity);
         if (validVehicles.Any())
         {
 
@@ -127,7 +146,7 @@ void SearchByModel()
         return;
     }
 
-    var validVehicles = Database.Vehicles.Where(vehicle => vehicle.model.ToLower() == input.ToLower());
+    var validVehicles = Vehicles().Where(vehicle => vehicle.model.ToLower() == input.ToLower());
     if (validVehicles.Any())
     {
 
@@ -180,22 +199,26 @@ void AddNewVehicle()
         return;
     }
 
-    Vehicle? v = null;
+  //  Vehicle? v = null;
     switch (input.ToString().ToLower())
     {
         case "b":
-            v = new Bike(engineCapacity, model, year);
-
+            var b = new Bike(engineCapacity, model, year);
+            bikes.Add(b);
+            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "bikes.json"), JsonSerializer.Serialize(bikes));
             break;
         case "c":
-            v = new Car(engineCapacity, model, year);
-
+            var c = new Car(engineCapacity, model, year);
+            cars.Add(c);
+            File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"), JsonSerializer.Serialize(cars));
             break;
 
     }
+  
+    /*
     if (v != null)
     {
-        Database.Vehicles.Add(v);
+        Vehicles().Add(v);
     }
-
+    */
 }
