@@ -40,6 +40,8 @@ while (shopActive == true)
     // HOMEWORK:
     //3: Search by model, make it get accepted regarded of case, so BMV = bMV = BmV etc. [done]
     //4: Search by engine capacity [done]
+    //Add Json reading and writing [done]
+    //Make sure deleting works, ig I did that as an extra for no reason lel
     var input = Console.ReadKey().KeyChar;
     Console.WriteLine();
     switch (input)
@@ -64,6 +66,10 @@ while (shopActive == true)
             AddNewVehicle();
          
             break;
+        case '6':
+            RemoveByID();
+
+            break;
         default:
             Console.WriteLine("invalid option");
             break;
@@ -77,6 +83,63 @@ void ShowAll()
     {
         vehicle.ShowMe();
     }
+}
+
+void RemoveByID()
+{
+    Console.WriteLine("B for bike, C for car");
+    var input = Console.ReadKey().KeyChar;
+    //  if (input.ToString().ToLower()!="b"&& input.ToString().ToLower() != "c")
+    if (input.ToString().ToLower() is not ("b" or "c"))
+    {
+        Console.WriteLine("Invalid vehicle type");
+        return;
+    }
+    Console.WriteLine("Currently available vehicles: ");
+    switch (input.ToString().ToLower())
+    {
+        case "b":
+            Console.WriteLine("Bikes: ");
+            for (int i = 0; i < bikes.Count; i++)
+            {
+                bikes[i].ShowMeListed(i);
+            }
+            Console.WriteLine("Would you like to remove any? If you do, select an id, press enter without typing anything if you don't");
+            if (Int32.TryParse(Console.ReadLine(), out int bikeID) && bikeID <= bikes.Count() - 1)
+            {
+                bikes.Remove(bikes[bikeID]);
+
+
+            }
+            break;
+        case "c":
+            Console.WriteLine("Cars: ");
+            for (int i = 0; i < cars.Count; i++)
+            {
+                cars[i].ShowMeListed(i);
+            }
+
+            Console.WriteLine("Would you like to remove any? If you do, select an id.");
+            if (Int32.TryParse(Console.ReadLine(), out int carID) && carID <= cars.Count() - 1)
+            {
+                cars.Remove(cars[carID]);
+
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid id, try again");
+                SearchByYear();
+            }
+            break;
+
+    }
+  
+  
+   
+  
+
+
 }
 void SearchByYear()
 {
@@ -164,6 +227,8 @@ void SearchByModel()
 
 
 }
+
+
 
 void AddNewVehicle()
 {
