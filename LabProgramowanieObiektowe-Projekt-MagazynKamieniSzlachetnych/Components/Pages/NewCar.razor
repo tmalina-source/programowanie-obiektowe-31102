@@ -1,0 +1,44 @@
+﻿@page "/newcar"
+@using Lab3
+@using System.Text.Json
+@rendermode InteractiveServer
+
+<input @bind="year" />
+<input @bind="capacity" />
+<input @bind="model" />
+<p>@year</p>
+<form method="post" @onsubmit="Submit" @formname="starship-plain-form">
+    <AntiforgeryToken />
+    <div>
+        <label>
+            Identifier:
+         
+        </label>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+      
+    </div>
+</form>
+
+@code {
+    // [SupplyParameterFromForm]
+    //  private Car? Model { get; set; }
+    int year;
+    double capacity;
+    string model ="";
+    // protected override void OnInitialized() => Model ??= new();
+
+    
+    private void Submit()
+    {/**/
+        Car car = new Car(capacity, model, year);
+        List<Car> carList = JsonSerializer.Deserialize<List<Car>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json")));
+        carList.Add(car);
+        File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"), JsonSerializer.Serialize(carList));
+
+    }
+
+
+
+}

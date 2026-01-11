@@ -1,7 +1,81 @@
 ﻿@page "/"
+@using System.Text.Json
+@using Lab3 
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Test Page - Listing</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Engine Capacity</th>
+			<th>Engine Capacity</th>
+			<th>Year</th>
+			<th>Model</th>
+			<th>Opcje</th>
+		</tr>
+	</thead>
+	<tbody>
+	
+		@foreach (var car in carList)
+		{
+			<tr>
+
+				<td>@GetId(car)</td>
+				<td>@car.EngineCapacity</td>
+				<td>@car.Year</td>
+				<td>@car.Model</td>
+				<td><button class="btn btn-sm btn-danger" @onclick="() => Delete(car)">Delete</button></td>
+
+
+
+			</tr>
+		}
+	</tbody>
+
+</table>
+
+@code{
+	//private Car[] carList;
+
+	//private List<Car>? carList;
+	private string carsJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"));
+
+	private List<Car> carList = JsonSerializer.Deserialize<List<Car>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json")));
+
+	private int GetId(Car value)
+	{
+		return carList.IndexOf(value)+1;
+	}
+	//int index = carList.FindIndex(a => a == Car);
+	private void Delete(Car value)
+	{
+		carList.Remove(value);
+		File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"), JsonSerializer.Serialize(carList));
+	
+	}
+
+	/*protected override void OnInitialized()
+	{
+		base.OnInitialized();
+	
+		//var carsJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"));
+	//	var cars = JsonSerializer.Deserialize<List<Car>>(carsJson);
+		//base.OnInitialized();
+	}
+	
+	protected override async Task OnInitializedAsync()
+	{
+		var carsJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"));
+		var cars = JsonSerializer.Deserialize<List<Car>>(carsJson);
+		// Simulate asynchronous loading to demonstrate streaming rendering
+		await Task.Delay(500);
+
+		var startDate = DateOnly.FromDateTime(DateTime.Now);
+		var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+	
+	}*/
+}
