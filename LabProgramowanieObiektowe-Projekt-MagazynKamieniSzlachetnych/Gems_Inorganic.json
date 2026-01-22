@@ -1,0 +1,14 @@
+[
+  {
+    "ColorValue": {
+      "format": "rgb",
+      "value": [ 255, 87, 51 ]
+    },
+    "Color": "Arch",
+    "ChemicalMakeUp": "Arch",
+    "Hardness": 1,
+    "Toughness": 1,
+    "GemName": "Arch",
+    "Preciousness": "SemiPrecious"
+  }
+]

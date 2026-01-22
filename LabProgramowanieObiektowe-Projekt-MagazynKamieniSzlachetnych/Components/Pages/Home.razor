@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using System.Text.Json
 @using Lab3 
+@using LabProjekt
+@using System.Text.Json.Serialization
 @rendermode InteractiveServer
 
 <PageTitle>Test Page - Listing</PageTitle>
@@ -11,6 +13,50 @@
 <table class="table">
 	<thead>
 		<tr>
+			<th>GemName</th>
+		</tr>
+	</thead>
+	<tbody>
+	
+		@foreach (var inorganicGem in Gems_InorganicList)
+		{
+			<tr>
+
+
+				<td>@inorganicGem.GemName</td>
+				
+
+
+
+			</tr>
+		}
+	</tbody>
+
+</table>
+
+
+
+@code{
+
+	private static string Gems_InorganicJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")); //possibly not needed
+	private static JsonSerializerOptions options = new JsonSerializerOptions
+	{
+		Converters = { new JsonStringEnumConverter() }
+	};
+	private List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(Gems_InorganicJson, options);
+	//private List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(Gems_InorganicJson);
+
+
+
+
+	private string carsJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"));
+
+	private List<Car> carList = JsonSerializer.Deserialize<List<Car>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json")));
+	
+	/*
+	 <table class="table">
+	<thead>
+		<tr>
 			<th>Engine Capacity</th>
 			<th>Engine Capacity</th>
 			<th>Year</th>
@@ -19,7 +65,7 @@
 		</tr>
 	</thead>
 	<tbody>
-	
+
 		@foreach (var car in carList)
 		{
 			<tr>
@@ -38,19 +84,13 @@
 
 </table>
 
-@code{
-	//private Car[] carList;
-
-	//private List<Car>? carList;
-	private string carsJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"));
-
-	private List<Car> carList = JsonSerializer.Deserialize<List<Car>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json")));
+	 */
 
 	private int GetId(Car value)
 	{
 		return carList.IndexOf(value)+1;
 	}
-	//int index = carList.FindIndex(a => a == Car);
+	
 	private void Delete(Car value)
 	{
 		carList.Remove(value);
