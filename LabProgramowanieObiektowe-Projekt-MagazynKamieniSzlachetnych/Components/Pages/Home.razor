@@ -7,13 +7,17 @@
 
 <PageTitle>Test Page - Listing</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Gemstone Categories - Inorganic</h1>
 
 
 <table class="table">
 	<thead>
 		<tr>
-			<th>GemName</th>
+			<th>Common Name</th>
+			<th>Color</th>
+			<th>Hardness</th>
+			<th>Preciousness</th>
+			<th>Formula (Chemical Makeup)</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -24,7 +28,37 @@
 
 
 				<td>@inorganicGem.GemName</td>
-				
+				<td>@inorganicGem.Color</td>
+				<td>@inorganicGem.Hardness</td>
+				<td>@inorganicGem.getPreciousnessString()</td>
+				<td>@inorganicGem.ChemicalMakeUp</td>
+			</tr>
+			
+		}
+	</tbody>
+
+</table>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Engine Capacity</th>
+			<th>Engine Capacity</th>
+			<th>Year</th>
+			<th>Model</th>
+			<th>Opcje</th>
+		</tr>
+	</thead>
+	<tbody>
+
+		@foreach (var car in carList)
+		{
+			<tr>
+
+				<td>@GetId(car)</td>
+				<td>@car.EngineCapacity</td>
+				<td>@car.Year</td>
+				<td>@car.Model</td>
+				<td><button class="btn btn-sm btn-danger" @onclick="() => Delete(car)">Delete</button></td>
 
 
 
@@ -38,12 +72,13 @@
 
 @code{
 
-	private static string Gems_InorganicJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")); //possibly not needed
+	//private static string Gems_InorganicJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")); //possibly not needed
+		//can't be using that, cuz it causes the list to not get updated in real time
 	private static JsonSerializerOptions options = new JsonSerializerOptions
 	{
 		Converters = { new JsonStringEnumConverter() }
 	};
-	private List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(Gems_InorganicJson, options);
+	private List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")), options);
 	//private List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(Gems_InorganicJson);
 
 

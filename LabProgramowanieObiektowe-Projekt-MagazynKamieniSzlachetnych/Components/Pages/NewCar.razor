@@ -1,41 +1,58 @@
 ﻿@page "/newcar"
 @using Lab3
 @using System.Text.Json
+@using LabProjekt
+@using System.Text.Json.Serialization
 @rendermode InteractiveServer
 
-<input @bind="year" />
-<input @bind="capacity" />
-<input @bind="model" />
-<p>@year</p>
+
+
+<InputNumber @bind-Value="Hardness" />
+<p>@Hardness</p>
+<InputSelect @bind-Value="@GemPreciousness">
+    <option value="@GemCategory_Preciousness.Precious">Precious</option>
+    <option value="@GemCategory_Preciousness.SemiPrecious">Semi-Precious</option>
+</InputSelect>
 <form method="post" @onsubmit="Submit" @formname="starship-plain-form">
     <AntiforgeryToken />
     <div>
         <label>
             Identifier:
-         
+
         </label>
     </div>
     <div>
         <button type="submit">Submit</button>
-      
+
     </div>
 </form>
 
 @code {
     // [SupplyParameterFromForm]
     //  private Car? Model { get; set; }
-    int year;
-    double capacity;
-    string model ="";
+   // int year;
+   // double capacity;
+   // string model = "";
     // protected override void OnInitialized() => Model ??= new();
+    double Hardness;
+    private static string Gems_InorganicJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")); //possibly not needed
+    private static JsonSerializerOptions options = new JsonSerializerOptions
+    {
+        Converters = { new JsonStringEnumConverter() }
+    };
+    GemCategory_Preciousness GemPreciousness;
 
-    
     private void Submit()
     {/**/
-        Car car = new Car(capacity, model, year);
-        List<Car> carList = JsonSerializer.Deserialize<List<Car>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json")));
-        carList.Add(car);
-        File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"), JsonSerializer.Serialize(carList));
+        InorganicGem_Type inorganicGemCategory = new InorganicGem_Type(System.Drawing.Color.AntiqueWhite, "", "", Hardness, "Placeholder", GemPreciousness);
+        List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(Gems_InorganicJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")), options);
+        Gems_InorganicList.Add(inorganicGemCategory);
+        File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json"), JsonSerializer.Serialize(Gems_InorganicList));
+
+       // Car car = new Car(capacity, model, year);
+       // List<Car> carList = JsonSerializer.Deserialize<List<Car>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json")));
+       // carList.Add(car);
+       // File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"), JsonSerializer.Serialize(carList));
 
     }
 

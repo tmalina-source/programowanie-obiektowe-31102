@@ -52,19 +52,19 @@ namespace LabProjekt
         public string Color { get; set; } //they gotta be public
        // public float Value { get; set; } case-by-case basis, this will be for "instances"
         public string ChemicalMakeUp { get; set; }
-        public int Hardness { get; set; }
-        public int Toughness { get; set; }
+        public double Hardness { get; set; }
+    
         public string GemName { get; set; }
 
 
-        public Stone(Color colorValue, string color, string chemicalMakeUp, int hardness, int toughness, string gemName)
+        public Stone(Color colorValue, string color, string chemicalMakeUp, double hardness, string gemName)
         {
          
           this.ColorValue = colorValue;
             this.Color = color;
             this.ChemicalMakeUp = chemicalMakeUp;
             this.Hardness = hardness;
-            this.Toughness = toughness;
+            //this.Toughness = toughness;
             this.GemName = gemName;
 
         }

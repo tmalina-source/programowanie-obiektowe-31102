@@ -59,9 +59,22 @@ namespace LabProjekt
         // private GemCategory_Origin origin; for instances
         // private bool polished; for instances
         // private bool inclusionsPresent; for instances
-        public InorganicGem_Type(Color colorValue, string color, string chemicalMakeUP, int hardness, int toughness, string gemName, GemCategory_Preciousness preciousness) : base(colorValue, color, chemicalMakeUP, hardness, toughness, gemName)
+        public InorganicGem_Type(Color colorValue, string color, string chemicalMakeUP, double hardness, string gemName, GemCategory_Preciousness preciousness) : base(colorValue, color, chemicalMakeUP, hardness, gemName)
         {
             this.Preciousness = preciousness;
+        }
+        public string getPreciousnessString()
+        {
+            if (this.Preciousness== GemCategory_Preciousness.Precious)
+            {
+                return "Precious";
+            }
+            else
+            {
+                return "Semi-Precious";
+            }
+               // return this.Preciousness.ToString();
+               //Enums don't appreciate "-", apparently
         }
      
       
