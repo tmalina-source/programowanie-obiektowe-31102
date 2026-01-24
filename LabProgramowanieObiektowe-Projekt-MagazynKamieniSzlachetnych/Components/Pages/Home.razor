@@ -13,60 +13,39 @@
 <table class="table">
 	<thead>
 		<tr>
+			<th>ID</th>
 			<th>Common Name</th>
 			<th>Color</th>
 			<th>Hardness</th>
 			<th>Preciousness</th>
 			<th>Formula (Chemical Makeup)</th>
+			<th>Options</th>
 		</tr>
 	</thead>
 	<tbody>
 	
 		@foreach (var inorganicGem in Gems_InorganicList)
 		{
+			
 			<tr>
 
 
+
+				<td>@GetId(inorganicGem)</td>
 				<td>@inorganicGem.GemName</td>
 				<td>@inorganicGem.Color</td>
 				<td>@inorganicGem.Hardness</td>
 				<td>@inorganicGem.getPreciousnessString()</td>
 				<td>@inorganicGem.ChemicalMakeUp</td>
+				<td><button class="btn btn-sm btn-danger" @onclick="() => Delete(inorganicGem)">Delete</button></td>
+				
 			</tr>
 			
 		}
 	</tbody>
 
 </table>
-<table class="table">
-	<thead>
-		<tr>
-			<th>Engine Capacity</th>
-			<th>Engine Capacity</th>
-			<th>Year</th>
-			<th>Model</th>
-			<th>Opcje</th>
-		</tr>
-	</thead>
-	<tbody>
 
-		@foreach (var car in carList)
-		{
-			<tr>
-
-				<td>@GetId(car)</td>
-				<td>@car.EngineCapacity</td>
-				<td>@car.Year</td>
-				<td>@car.Model</td>
-				<td><button class="btn btn-sm btn-danger" @onclick="() => Delete(car)">Delete</button></td>
-
-
-
-			</tr>
-		}
-	</tbody>
-
-</table>
 
 
 
@@ -81,12 +60,12 @@
 	private List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")), options);
 	//private List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(Gems_InorganicJson);
 
+	//  background-color: rgba(ColorValue_R, ColorValue_R, ColorValue_R, 1);
 
 
+	//private string carsJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"));
 
-	private string carsJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json"));
-
-	private List<Car> carList = JsonSerializer.Deserialize<List<Car>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json")));
+	//private List<Car> carList = JsonSerializer.Deserialize<List<Car>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "cars.json")));
 	
 	/*
 	 <table class="table">
@@ -120,8 +99,18 @@
 </table>
 
 	 */
+	private int GetId(InorganicGem_Type value)
+	{
+		return Gems_InorganicList.IndexOf(value) + 1;
+	}
+	private void Delete(InorganicGem_Type value)
+	{
+		Gems_InorganicList.Remove(value);
+		File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json"), JsonSerializer.Serialize(Gems_InorganicList));
 
-	private int GetId(Car value)
+	}
+
+	/*private int GetId(Car value)
 	{
 		return carList.IndexOf(value)+1;
 	}
@@ -133,7 +122,7 @@
 	
 	}
 
-	/*protected override void OnInitialized()
+	protected override void OnInitialized()
 	{
 		base.OnInitialized();
 	

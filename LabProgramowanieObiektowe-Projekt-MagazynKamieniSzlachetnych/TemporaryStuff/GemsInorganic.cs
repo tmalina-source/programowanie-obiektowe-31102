@@ -59,7 +59,7 @@ namespace LabProjekt
         // private GemCategory_Origin origin; for instances
         // private bool polished; for instances
         // private bool inclusionsPresent; for instances
-        public InorganicGem_Type(Color colorValue, string color, string chemicalMakeUP, double hardness, string gemName, GemCategory_Preciousness preciousness) : base(colorValue, color, chemicalMakeUP, hardness, gemName)
+        public InorganicGem_Type(string color, string chemicalMakeUP, double hardness, string gemName, GemCategory_Preciousness preciousness) : base(color, chemicalMakeUP, hardness, gemName)
         {
             this.Preciousness = preciousness;
         }

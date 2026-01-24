@@ -48,7 +48,7 @@ namespace LabProjekt
         //  public string Model { get; set; }
         //  public int Year { get; set; }
 
-        public Color ColorValue { get; set; } 
+     
         public string Color { get; set; } //they gotta be public
        // public float Value { get; set; } case-by-case basis, this will be for "instances"
         public string ChemicalMakeUp { get; set; }
@@ -57,10 +57,10 @@ namespace LabProjekt
         public string GemName { get; set; }
 
 
-        public Stone(Color colorValue, string color, string chemicalMakeUp, double hardness, string gemName)
+        public Stone(string color, string chemicalMakeUp, double hardness, string gemName)
         {
          
-          this.ColorValue = colorValue;
+          
             this.Color = color;
             this.ChemicalMakeUp = chemicalMakeUp;
             this.Hardness = hardness;
