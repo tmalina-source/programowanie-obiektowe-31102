@@ -9,12 +9,18 @@ namespace Projekt_MagazynKamieniSzlachetnych
         public bool InclusionsPresent { get; set; }
 
         public int AmberClass { get; set; }
-        public OrganicGem_Ambers(string color, double hardness, string gemName, bool polished, bool inclusionsPresent, int amberClass) : base(color, hardness, gemName)
+
+        public float Size { get; set; }
+
+        public float Value { get; set; }
+        public OrganicGem_Ambers(string color, double hardness, string gemName, bool polished, bool inclusionsPresent, int amberClass, float size, float value) : base(color, hardness, gemName)
         {
             // Preciousness = preciousness;
             Polished = polished;
             InclusionsPresent = inclusionsPresent;
             AmberClass = amberClass;
+            Size = size;
+            Value = value;
           
         }
         /*

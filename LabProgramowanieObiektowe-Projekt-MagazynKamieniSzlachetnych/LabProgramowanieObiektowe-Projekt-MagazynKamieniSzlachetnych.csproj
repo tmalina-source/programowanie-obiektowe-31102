@@ -18,9 +18,4 @@
 		</None>
 	</ItemGroup>
 
-
-	<ItemGroup>
-	  <Folder Include="Gems\Organic\Pearls\" />
-	</ItemGroup>
-
 </Project>
