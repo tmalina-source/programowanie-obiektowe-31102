@@ -1,0 +1,133 @@
+﻿@page "/gemcat_io"
+@using System.Text.Json
+@using Projekt_MagazynKamieniSzlachetnych
+@using System.Text.Json.Serialization
+@rendermode InteractiveServer
+@inject NavigationManager uriHelper;
+
+<PageTitle>Test Page - Listing</PageTitle>
+
+<h1>Gemstone Categories - Inorganic</h1>
+
+<form method="post" @onsubmit="Submit" @formname="starship-plain-form">
+	<AntiforgeryToken />
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+
+
+			
+			<tr>
+				<th><label>Common Name</label></th>
+				<th><InputText @bind-Value="GemName" /></th>
+			</tr>
+			<tr>
+				<th><label>Hardness</label></th>
+				<th><InputNumber @bind-Value="Hardness" /></th>
+			</tr>
+			<tr>
+				<th><label>Color</label></th>
+				<th><InputText @bind-Value="Color" /></th>
+			</tr>
+			<tr>
+				<th><label>Gem Preciousness</label></th>
+				<th>
+					<InputSelect @bind-Value="@GemPreciousness">
+						<option value="@GemCategory_Preciousness.Precious">Precious</option>
+						<option value="@GemCategory_Preciousness.SemiPrecious">Semi-Precious</option>
+					</InputSelect>
+				</th>
+			</tr>
+
+			<tr>
+				<th></th>
+				<th><button type="submit">Submit</button></th>
+			</tr>
+
+
+		</tbody>
+
+	</table>
+</form>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Common Name</th>
+			<th>Color</th>
+			<th>Hardness</th>
+			<th>Preciousness</th>
+			<th>Options</th>
+		</tr>
+	</thead>
+	<tbody>
+	
+		@foreach (var inorganicGem in Gems_InorganicList)
+		{
+			
+			<tr>
+
+
+
+				<td>@GetId(inorganicGem)</td>
+				<td>@inorganicGem.GemName</td>
+				<td>@inorganicGem.Color</td>
+				<td>@inorganicGem.Hardness</td>
+				<td>@inorganicGem.getPreciousnessString()</td>
+				<td><button class="btn btn-sm btn-danger" @onclick="() => Delete(inorganicGem)">Delete</button></td>
+				
+			</tr>
+			
+		}
+	</tbody>
+
+</table>
+
+
+
+
+@code{
+
+	
+	private static JsonSerializerOptions options = new JsonSerializerOptions
+	{
+		Converters = { new JsonStringEnumConverter() }
+	};
+	private List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")), options);
+
+	private int GetId(InorganicGem_Type value)
+	{
+		return Gems_InorganicList.IndexOf(value) + 1;
+	}
+	private void Delete(InorganicGem_Type value)
+	{
+		Gems_InorganicList.Remove(value);
+		File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json"), JsonSerializer.Serialize(Gems_InorganicList));
+
+	}
+
+
+	double Hardness;
+	string Color = "";
+	
+	string GemName = "";
+	GemCategory_Preciousness GemPreciousness;
+
+	private static string Gems_InorganicJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")); //possibly not needed
+	
+	private void Submit()
+	{
+		InorganicGem_Type inorganicGemCategory = new InorganicGem_Type(Color, Hardness, GemName, GemPreciousness);
+		List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(Gems_InorganicJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")), options);
+		Gems_InorganicList.Add(inorganicGemCategory);
+		File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json"), JsonSerializer.Serialize(Gems_InorganicList));
+		uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true); //reloads the page, so the changes become immediately visible
+		}
+
+}

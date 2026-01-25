@@ -1,0 +1,165 @@
+﻿@page "/geminst_io"
+@using System.Text.Json
+@using Projekt_MagazynKamieniSzlachetnych
+@using System.Text.Json.Serialization
+@rendermode InteractiveServer
+@inject NavigationManager uriHelper;
+
+<PageTitle>Test Page - Listing</PageTitle>
+
+<h1>Gemstone Instances - Inorganic</h1>
+
+<form method="post" @onsubmit="Submit" @formname="starship-plain-form">
+	<AntiforgeryToken />
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+
+
+			<tr>
+				<th><label>Gem Species</label></th>
+				<th>
+					<InputSelect @bind-Value="@Gem_Type_Name">
+
+						@foreach (var InorganicGem_Type in JsonSerializer.Deserialize<List<InorganicGem_Type>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")), options))
+						{
+							<option value="@InorganicGem_Type.GemName">@InorganicGem_Type.GemName</option>
+						}
+					</InputSelect>
+				</th>
+			</tr>
+			<tr>
+				<th><label>Polished?</label></th>
+				<th><InputCheckbox @bind-Value="PolishStatus" /></th>		
+			</tr>
+				<tr>
+				<th><label>Inclusions Present?</label></th>
+				<th><InputCheckbox @bind-Value="InclusionStatus" /></th>
+			</tr>
+			<tr>
+				<th><label>Size</label></th>
+				<th><InputNumber @bind-Value="Size" /></th>
+			</tr>
+			<tr>
+				<th><label>Value</label></th>
+				<th><InputNumber @bind-Value="Value" /></th>	
+			</tr>
+			
+			<tr>
+				<th></th>
+				<th><button type="submit">Submit</button></th>
+			</tr>
+
+
+		</tbody>
+
+	</table>
+</form>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Common Name</th>
+			<th>Color</th>
+			<th>Polished?</th>
+			<th>Size</th>
+			<th>Origin</th>
+			<th>Inclusions Present?</th>
+			<th>Value</th>
+			<th>Hardness</th>
+			<th>Preciousness</th>
+			<th>Options</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var inorganicGemInstance in Gems_InorganicInstanceList)
+		{
+
+			<tr>
+
+
+
+				<td>@GetId(inorganicGemInstance)</td>
+				<td>@inorganicGemInstance.Gem_Type.GemName</td>
+				<td>@inorganicGemInstance.Gem_Type.Color</td>
+				<td>@YesNoFromBool(inorganicGemInstance.Polished)</td>
+				<td>@inorganicGemInstance.Size</td>
+				<td>@inorganicGemInstance.getOriginString()</td>
+				<td>@YesNoFromBool(inorganicGemInstance.InclusionsPresent)</td>
+				<td>@inorganicGemInstance.Value</td>
+				<td>@inorganicGemInstance.Gem_Type.Hardness</td>
+				<td>@inorganicGemInstance.Gem_Type.getPreciousnessString()</td>
+				<td><button class="btn btn-sm btn-danger" @onclick="() => Delete(inorganicGemInstance)">Delete</button></td>
+
+			</tr>
+
+		}
+
+
+	</tbody>
+
+</table>
+
+
+
+
+@code {
+	private static JsonSerializerOptions options = new JsonSerializerOptions
+	{
+		Converters = { new JsonStringEnumConverter() }
+	};
+	private List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")), options);
+	private List<InorganicGem_Instance> Gems_InorganicInstanceList = JsonSerializer.Deserialize<List<InorganicGem_Instance>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic_Instances.json")), options);
+
+
+	bool PolishStatus;
+	bool InclusionStatus;
+	float Size;
+	float Value;
+	string Gem_Type_Name = "";
+	GemCategory_Origin GemOrigin;
+
+	private static string Gems_InorganicJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic_Instances.json")); //possibly not needed
+
+	private void Submit()
+	{
+		InorganicGem_Instance inorganicGemInstance = new InorganicGem_Instance(PolishStatus, InclusionStatus, Size, Value, GemOrigin, GetGemTypeFromName(Gem_Type_Name));
+		List<InorganicGem_Instance> Gems_InorganicInstanceList = JsonSerializer.Deserialize<List<InorganicGem_Instance>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic_Instances.json")), options);
+		Gems_InorganicInstanceList.Add(inorganicGemInstance);
+		File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic_Instances.json"), JsonSerializer.Serialize(Gems_InorganicInstanceList));
+		uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true); //reloads the page, so the changes become immediately visible
+	}
+	private InorganicGem_Type GetGemTypeFromName(string GemTypeName)
+	{
+		var ValidGemTypes = JsonSerializer.Deserialize<List<InorganicGem_Type>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")), options).Where(GemType => GemType.GemName == GemTypeName);
+		return ValidGemTypes.FirstOrDefault();
+	}
+	private int GetId(InorganicGem_Instance value)
+	{
+
+		return Gems_InorganicInstanceList.IndexOf(value) + 1;
+	}
+	private void Delete(InorganicGem_Instance value)
+	{
+		Gems_InorganicInstanceList.Remove(value);
+		File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic_Instances.json"), JsonSerializer.Serialize(Gems_InorganicInstanceList));
+
+	}
+	private string YesNoFromBool(bool boolValue)
+	{
+		if (boolValue == true)
+		{
+			return "Yes";
+		}
+		else
+		{
+			return "No";
+		}
+	}
+}

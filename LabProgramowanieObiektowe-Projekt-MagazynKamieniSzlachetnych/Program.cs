@@ -1,4 +1,3 @@
-using Lab3;
 using LabProgramowanieObiektowe_Projekt_MagazynKamieniSzlachetnych.Components;
 using System.Text.Json;
 

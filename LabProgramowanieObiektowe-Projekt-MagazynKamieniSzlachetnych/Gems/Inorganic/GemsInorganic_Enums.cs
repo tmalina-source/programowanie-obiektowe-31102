@@ -1,4 +1,4 @@
-﻿namespace LabProjekt
+﻿namespace Projekt_MagazynKamieniSzlachetnych
 {
     public enum GemCategory_Preciousness
     {
