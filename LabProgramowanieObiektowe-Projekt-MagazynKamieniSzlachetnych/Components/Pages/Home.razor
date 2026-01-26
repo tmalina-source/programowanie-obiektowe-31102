@@ -3,7 +3,194 @@
 @using Projekt_MagazynKamieniSzlachetnych
 @using System.Text.Json.Serialization
 @rendermode InteractiveServer
+@inject NavigationManager uriHelper;
 
-<PageTitle>Test Page - Listing</PageTitle>
+<PageTitle>Gemstone storage</PageTitle>
+
+<h1>Inorganic Gemstones</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Common Name</th>
+			<th>Color</th>
+			<th>Polished?</th>
+			<th>Size</th>
+			<th>Origin</th>
+			<th>Inclusions Present?</th>
+			<th>Value</th>
+			<th>Hardness</th>
+			<th>Preciousness</th>
+			<th>Options</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var inorganicGemInstance in Gems_InorganicInstanceList)
+		{
+
+			<tr>
 
 
+
+				<td>@GetId(inorganicGemInstance)</td>
+				<td>@inorganicGemInstance.Gem_Type.GemName</td>
+				<td>@inorganicGemInstance.Gem_Type.Color</td>
+				<td>@YesNoFromBool(inorganicGemInstance.Polished)</td>
+				<td>@inorganicGemInstance.Size</td>
+				<td>@inorganicGemInstance.getOriginString()</td>
+				<td>@YesNoFromBool(inorganicGemInstance.InclusionsPresent)</td>
+				<td>@inorganicGemInstance.Value</td>
+				<td>@inorganicGemInstance.Gem_Type.Hardness</td>
+				<td>@inorganicGemInstance.Gem_Type.getPreciousnessString()</td>
+				<td><button class="btn btn-sm" @onclick="() => Redirect(inorganicGemInstance.Gem_Type.getPageAddress())">Move To Page</button></td>
+
+			</tr>
+
+		}
+
+
+	</tbody>
+</table>
+
+<h1>Pearls</h1>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Common Name</th>
+			<th>Color</th>
+			<th>Luster</th>
+			<th>Shape</th>
+			<th>Surface</th>
+			<th>Size</th>
+			<th>Value</th>
+			<th>Options</th>
+		</tr>
+	</thead>
+	<tbody>
+
+		@foreach (var organicGem in Gems_PearlsList)
+		{
+
+			<tr>
+
+
+
+				<td>@GetId(organicGem)</td>
+				<td>@organicGem.GemName</td>
+				<td>@organicGem.Color</td>
+				<td>@organicGem.getLusterString()</td>
+				<td>@organicGem.getShapeString()</td>
+				<td>@organicGem.getSurfaceString()</td>
+				<td>@organicGem.Size</td>
+				<td>@organicGem.Value</td>
+				<td><button class="btn btn-sm" @onclick="() => Redirect(organicGem.getPageAddress())">Move To Page</button></td>
+
+
+			</tr>
+
+		}
+	</tbody>
+
+
+
+</table>
+
+<h1>Ambers</h1>
+
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Common Name</th>
+			<th>Color</th>
+			<th>Polished?</th>
+			<th>Inclusions Present?</th>
+			<th>Class</th>
+			<th>Size</th>
+			<th>Value</th>
+			<th>Options</th>
+		</tr>
+	</thead>
+	<tbody>
+
+		@foreach (var organicGem in Gems_AmbersList)
+		{
+
+			<tr>
+
+
+
+				<td>@GetId(organicGem)</td>
+				<td>@organicGem.GemName</td>
+				<td>@organicGem.Color</td>
+				<td>@YesNoFromBool(organicGem.Polished)</td>
+				<td>@YesNoFromBool(organicGem.InclusionsPresent)</td>
+				<td>@organicGem.AmberClass</td>
+				<td>@organicGem.Size</td>
+				<td>@organicGem.Value</td>
+				<td><button class="btn btn-sm" @onclick="() => Redirect(organicGem.getPageAddress())">Move To Page</button></td>
+
+			</tr>
+
+		}
+	</tbody>
+
+</table>
+
+@code {
+
+	private void Redirect(string value)
+	{
+		uriHelper.NavigateTo(value, true, true);
+	}
+	private static JsonSerializerOptions options = new JsonSerializerOptions
+	{
+		Converters = { new JsonStringEnumConverter() }
+	};
+	private List<InorganicGem_Type> Gems_InorganicList = JsonSerializer.Deserialize<List<InorganicGem_Type>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")), options);
+	private List<InorganicGem_Instance> Gems_InorganicInstanceList = JsonSerializer.Deserialize<List<InorganicGem_Instance>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic_Instances.json")), options);
+
+
+
+	private List<OrganicGem_Pearls> Gems_PearlsList = JsonSerializer.Deserialize<List<OrganicGem_Pearls>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Organic_Pearls.json")), options);
+
+	private List<OrganicGem_Ambers> Gems_AmbersList = JsonSerializer.Deserialize<List<OrganicGem_Ambers>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Organic_Ambers.json")), options);
+
+	
+
+
+
+	private InorganicGem_Type GetGemTypeFromName(string GemTypeName)
+	{
+		var ValidGemTypes = JsonSerializer.Deserialize<List<InorganicGem_Type>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic.json")), options).Where(GemType => GemType.GemName == GemTypeName);
+		return ValidGemTypes.FirstOrDefault();
+	}
+	private int GetId(InorganicGem_Instance value)
+	{
+
+		return Gems_InorganicInstanceList.IndexOf(value) + 1;
+	}
+	private int GetId(OrganicGem_Pearls value)
+	{
+		return Gems_PearlsList.IndexOf(value) + 1;
+	}
+	private int GetId(OrganicGem_Ambers value)
+	{
+		return Gems_AmbersList.IndexOf(value) + 1;
+	}
+
+	private string YesNoFromBool(bool boolValue)
+	{
+		if (boolValue == true)
+		{
+			return "Yes";
+		}
+		else
+		{
+			return "No";
+		}
+	}
+}

@@ -5,7 +5,8 @@
 @rendermode InteractiveServer
 @inject NavigationManager uriHelper;
 
-<PageTitle>Test Page - Listing</PageTitle>
+
+<PageTitle>Inorganic Gems</PageTitle>
 
 <h1>Gemstone Instances - Inorganic</h1>
 
@@ -49,7 +50,15 @@
 				<th><label>Value</label></th>
 				<th><InputNumber @bind-Value="Value" /></th>	
 			</tr>
-			
+			<tr>
+				<th><label>Gem Origin</label></th>
+				<th>
+					<InputSelect @bind-Value="@GemOrigin">
+						<option value="@GemCategory_Origin.Natural">Natural</option>
+						<option value="@GemCategory_Origin.Synthetic">Synthetic</option>
+					</InputSelect>
+				</th>
+			</tr>
 			<tr>
 				<th></th>
 				<th><button type="submit">Submit</button></th>
@@ -134,6 +143,8 @@
 		Gems_InorganicInstanceList.Add(inorganicGemInstance);
 		File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Inorganic_Instances.json"), JsonSerializer.Serialize(Gems_InorganicInstanceList));
 		uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true); //reloads the page, so the changes become immediately visible
+		//uriHelper.NavigateTo("gem_o_amber", true, true);
+		//Works, just needs reloading above to not happen, cuz then it gets skipped
 	}
 	private InorganicGem_Type GetGemTypeFromName(string GemTypeName)
 	{

@@ -4,8 +4,11 @@ namespace Projekt_MagazynKamieniSzlachetnych
     public class OrganicGem_Pearls : Stone
     {
 
-       // public GemCategory_Preciousness Preciousness { get; set; }
-     
+
+        public override string getPageAddress()
+        {
+            return "gem_o_pearl";
+        }
 
         public float Size { get; set; }
         public float Value { get; set; }
@@ -22,7 +25,7 @@ namespace Projekt_MagazynKamieniSzlachetnych
             PearlShape = pearlShape;
             PearlLuster = pearlLuster;
             PearlSurface = pearlSurface;
-             Size = size;
+            Size = size;
             Value = value;
             base.Hardness = 2.5;
 
@@ -34,11 +37,15 @@ namespace Projekt_MagazynKamieniSzlachetnych
             {
                 return "Near Round";
             }
+            if (PearlShape == PearlCategory_Shape.SemiBoroque)
+            {
+                return "Semi-Boroque";
+            }
             else
             {
                 return this.PearlShape.ToString();
             }
-         
+
         }
         public string getSurfaceString()
         {
@@ -68,21 +75,7 @@ namespace Projekt_MagazynKamieniSzlachetnych
             }
 
         }
-        /*
-        public string getPreciousnessString()
-        {
-            if (Preciousness == GemCategory_Preciousness.Precious)
-            {
-                return "Precious";
-            }
-            else
-            {
-                return "Semi-Precious";
-            }
-            // return this.Preciousness.ToString();
-            //Enums don't appreciate "-", apparently
-        }
-        */
+
 
     }
 

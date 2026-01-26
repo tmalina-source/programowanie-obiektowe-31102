@@ -1,1 +1,42 @@
-[{"Polished":false,"InclusionsPresent":false,"AmberClass":0,"Size":0,"Value":0,"Color":"Amber","Hardness":5,"GemName":"AmberTest"},{"Polished":false,"InclusionsPresent":false,"AmberClass":0,"Size":0,"Value":0,"Color":"NotAmber","Hardness":6,"GemName":"AmberTest2"},{"Polished":false,"InclusionsPresent":true,"AmberClass":3,"Size":7,"Value":235235,"Color":"Blue","Hardness":3,"GemName":"Blue Amber"}]
+[
+  {
+    "Polished": false,
+    "InclusionsPresent": false,
+    "AmberClass": 0,
+    "Size": 0,
+    "Value": 0,
+    "Color": "Amber",
+    "Hardness": 2.5,
+    "GemName": "AmberTest"
+  },
+  {
+    "Polished": false,
+    "InclusionsPresent": false,
+    "AmberClass": 0,
+    "Size": 0,
+    "Value": 0,
+    "Color": "NotAmber",
+    "Hardness": 2.5,
+    "GemName": "AmberTest2"
+  },
+  {
+    "Polished": false,
+    "InclusionsPresent": true,
+    "AmberClass": 3,
+    "Size": 7,
+    "Value": 235235,
+    "Color": "Blue",
+    "Hardness": 2.5,
+    "GemName": "Blue Amber"
+  },
+  {
+    "Polished": true,
+    "InclusionsPresent": true,
+    "AmberClass": 4,
+    "Size": 5,
+    "Value": 3,
+    "Color": "Red",
+    "Hardness": 2.5,
+    "GemName": "Basic"
+  }
+]

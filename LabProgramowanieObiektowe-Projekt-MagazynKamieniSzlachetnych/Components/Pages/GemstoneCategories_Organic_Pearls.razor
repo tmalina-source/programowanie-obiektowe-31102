@@ -1,0 +1,184 @@
+﻿@page "/gem_o_pearl"
+@using System.Text.Json
+@using Projekt_MagazynKamieniSzlachetnych
+@using System.Text.Json.Serialization
+@rendermode InteractiveServer
+@inject NavigationManager uriHelper;
+
+<PageTitle>Pearls</PageTitle>
+
+<h1>Organic Gemstones - Pearls</h1>
+
+<form method="post" @onsubmit="Submit" @formname="starship-plain-form">
+	<AntiforgeryToken />
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+
+
+			
+			<tr>
+				<th><label>Common Name</label></th>
+				<th><InputText @bind-Value="GemName" /></th>
+			</tr>
+			<tr>
+				<th><label>Color</label></th>
+				<th><InputText @bind-Value="Color" /></th>
+			</tr>
+			<tr>
+				<th><label>Luster</label></th>
+				<th>
+					<InputSelect @bind-Value="@Luster">
+						<option value="@PearlCategory_Luster.Excellent">Excellent</option>
+						<option value="@PearlCategory_Luster.VeryGood">Very Good</option>
+						<option value="@PearlCategory_Luster.Good">Good</option>
+						<option value="@PearlCategory_Luster.Fair">Fair</option>
+						<option value="@PearlCategory_Luster.Poor">Poor</option>
+					</InputSelect>
+				</th>
+			</tr>
+			<tr>
+				<th><label>Shape</label></th>
+				<th>
+					<InputSelect @bind-Value="@Shape">
+						<option value="@PearlCategory_Shape.Round">Round</option>
+						<option value="@PearlCategory_Shape.NearRound">Near Round</option>
+						<option value="@PearlCategory_Shape.Oval">Oval</option>
+						<option value="@PearlCategory_Shape.Button">Button</option>
+						<option value="@PearlCategory_Shape.Drop">Drop</option>
+						<option value="@PearlCategory_Shape.SemiBoroque">Semi-Boroque</option>
+						<option value="@PearlCategory_Shape.Boroque">Boroque</option>
+					</InputSelect>
+				</th>
+			</tr>
+			<tr>
+				<th><label>Surface</label></th>
+				<th>
+					<InputSelect @bind-Value="@Surface">
+						<option value="@PearlCategory_Surface.Clean">Excellent</option>
+						<option value="@PearlCategory_Surface.LightlySpotted">Lightly Spotted</option>
+						<option value="@PearlCategory_Surface.ModeratelySpotted">Moderately Spotted</option>
+						<option value="@PearlCategory_Surface.HeavilySpotted">Heavily Spotted</option>
+					</InputSelect>
+				</th>
+			</tr>
+			<tr>
+				<th><label>Size</label></th>
+				<th><InputNumber @bind-Value="Size" /></th>
+			</tr>
+			<tr>
+				<th><label>Value</label></th>
+				<th><InputNumber @bind-Value="Value" /></th>
+			</tr>
+			<tr>
+				<th></th>
+				<th><button type="submit">Submit</button></th>
+			</tr>
+		</tbody>
+
+	</table>
+</form>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Common Name</th>
+			<th>Color</th>
+			<th>Luster</th>
+			<th>Shape</th>
+			<th>Surface</th>
+			<th>Size</th>
+			<th>Value</th>
+			<th>Options</th>
+		</tr>
+	</thead>
+	<tbody>
+	
+		@foreach (var organicGem in Gems_PearlsList)
+		{
+			
+			<tr>
+
+
+
+				<td>@GetId(organicGem)</td>
+				<td>@organicGem.GemName</td>
+				<td>@organicGem.Color</td>
+				<td>@organicGem.getLusterString()</td>
+				<td>@organicGem.getShapeString()</td>
+				<td>@organicGem.getSurfaceString()</td>
+				<td>@organicGem.Size</td>
+				<td>@organicGem.Value</td>
+				<td><button class="btn btn-sm btn-danger" @onclick="() => Delete(organicGem)">Delete</button></td>
+
+			</tr>
+			
+		}
+	</tbody>
+
+</table>
+
+
+
+
+@code{
+
+
+	private static JsonSerializerOptions options = new JsonSerializerOptions
+	{
+		Converters = { new JsonStringEnumConverter() }
+	};
+	private List<OrganicGem_Pearls> Gems_PearlsList = JsonSerializer.Deserialize<List<OrganicGem_Pearls>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Organic_Pearls.json")), options);
+	//private List<OrganicGem_Pearls> Gems_PearlsList = new List<OrganicGem_Pearls>();
+	private int GetId(OrganicGem_Pearls value)
+	{
+		return Gems_PearlsList.IndexOf(value) + 1;
+	}
+	private void Delete(OrganicGem_Pearls value)
+	{
+		Gems_PearlsList.Remove(value);
+		File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Organic_Pearls.json"), JsonSerializer.Serialize(Gems_PearlsList));
+
+	}
+
+
+	//double Hardness;
+	string Color = "";
+	string GemName = "";
+
+	PearlCategory_Luster Luster;
+	PearlCategory_Shape Shape;
+	PearlCategory_Surface Surface;
+	float Size;
+	float Value;
+
+	//private static string Gems_InorganicJson = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Organic_Ambers.json")); //possibly not needed
+	
+	private void Submit()
+	{
+		OrganicGem_Pearls NewPearl = new OrganicGem_Pearls(Color, 0, GemName, Size, Value, Shape,Surface,Luster);
+		List<OrganicGem_Pearls> Gems_PearlsList = JsonSerializer.Deserialize<List<OrganicGem_Pearls>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Organic_Pearls.json")), options);
+		//List<OrganicGem_Pearls> Gems_PearlsList = new List<OrganicGem_Pearls>();
+		Gems_PearlsList.Add(NewPearl);
+		File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Organic_Pearls.json"), JsonSerializer.Serialize(Gems_PearlsList));
+		uriHelper.NavigateTo(uriHelper.Uri, forceLoad: true); //reloads the page, so the changes become immediately visible
+	}
+	private string YesNoFromBool(bool boolValue)
+	{
+		if (boolValue == true)
+		{
+			return "Yes";
+		}
+		else
+		{
+			return "No";
+		}
+	}
+
+}

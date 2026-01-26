@@ -5,7 +5,7 @@
 @rendermode InteractiveServer
 @inject NavigationManager uriHelper;
 
-<PageTitle>Test Page - Listing</PageTitle>
+<PageTitle>Ambers</PageTitle>
 
 <h1>Organic Gemstones - Ambers</h1>
 
@@ -25,10 +25,6 @@
 			<tr>
 				<th><label>Common Name</label></th>
 				<th><InputText @bind-Value="GemName" /></th>
-			</tr>
-			<tr>
-				<th><label>Hardness</label></th>
-				<th><InputNumber @bind-Value="Hardness" /></th>
 			</tr>
 			<tr>
 				<th><label>Color</label></th>
@@ -69,7 +65,6 @@
 			<th>ID</th>
 			<th>Common Name</th>
 			<th>Color</th>
-			<th>Hardness</th>
 			<th>Polished?</th>
 			<th>Inclusions Present?</th>
 			<th>Class</th>
@@ -90,7 +85,6 @@
 				<td>@GetId(organicGem)</td>
 				<td>@organicGem.GemName</td>
 				<td>@organicGem.Color</td>
-				<td>@organicGem.Hardness</td>
 				<td>@YesNoFromBool(organicGem.Polished)</td>
 				<td>@YesNoFromBool(organicGem.InclusionsPresent)</td>
 				<td>@organicGem.AmberClass</td>
@@ -129,7 +123,7 @@
 	}
 
 
-	double Hardness;
+	//double Hardness;
 	string Color = "";
 	string GemName = "";
 
@@ -143,7 +137,7 @@
 	
 	private void Submit()
 	{
-		OrganicGem_Ambers NewAmber = new OrganicGem_Ambers(Color, Hardness, GemName, PolishStatus, InclusionStatus, AmberClass, Size, Value);
+		OrganicGem_Ambers NewAmber = new OrganicGem_Ambers(Color, 0, GemName, PolishStatus, InclusionStatus, AmberClass, Size, Value);
 		List<OrganicGem_Ambers> Gems_AmbersList = JsonSerializer.Deserialize<List<OrganicGem_Ambers>>(File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Gems_Organic_Ambers.json")), options);
 		//List<OrganicGem_Ambers> Gems_AmbersList = new List<OrganicGem_Ambers>();
 		Gems_AmbersList.Add(NewAmber);

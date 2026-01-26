@@ -3,8 +3,11 @@ namespace Projekt_MagazynKamieniSzlachetnych
 {
     public class OrganicGem_Ambers : Stone
     {
-
-       // public GemCategory_Preciousness Preciousness { get; set; }
+        public override string getPageAddress()
+        {
+            return "gem_o_amber";
+        }
+        // public GemCategory_Preciousness Preciousness { get; set; }
         public bool Polished { get; set; }
         public bool InclusionsPresent { get; set; }
 
@@ -21,23 +24,10 @@ namespace Projekt_MagazynKamieniSzlachetnych
             AmberClass = amberClass;
             Size = size;
             Value = value;
-          
+            base.Hardness = 2.5;
+
         }
-        /*
-        public string getPreciousnessString()
-        {
-            if (Preciousness == GemCategory_Preciousness.Precious)
-            {
-                return "Precious";
-            }
-            else
-            {
-                return "Semi-Precious";
-            }
-            // return this.Preciousness.ToString();
-            //Enums don't appreciate "-", apparently
-        }
-        */
+     
 
     }
 
