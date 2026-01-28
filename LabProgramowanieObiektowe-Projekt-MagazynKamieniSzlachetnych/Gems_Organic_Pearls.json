@@ -1,1 +1,22 @@
-[{"Size":3,"Value":4,"PearlShape":1,"PearlSurface":1,"PearlLuster":2,"Color":"White[Duh]","Hardness":2.5,"GemName":"Common Pearl"},{"Size":1,"Value":3,"PearlShape":1,"PearlSurface":0,"PearlLuster":1,"Color":"Red","Hardness":2.5,"GemName":"Red Pearl"}]
+[
+  {
+    "Size": 856.58,
+    "Value": 100000,
+    "PearlShape": 0,
+    "PearlSurface": 0,
+    "PearlLuster": 0,
+    "Color": "White",
+    "Hardness": 2.5,
+    "GemName": "White Pearl"
+  },
+  {
+    "Size": 502.43,
+    "Value": 2500,
+    "PearlShape": 5,
+    "PearlSurface": 2,
+    "PearlLuster": 1,
+    "Color": "Silver",
+    "Hardness": 2.5,
+    "GemName": "Silver Pearl"
+  }
+]
